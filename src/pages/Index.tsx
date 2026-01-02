@@ -13,7 +13,7 @@ import ProgressSteps from "@/components/ProgressSteps";
 type Step = "hero" | "category" | "products" | "questionnaire" | "energy" | "result";
 
 // Categories that have energy consumption calculations
-const energyCategories = ["ar-condicionado", "geladeira", "microondas", "tv"];
+const energyCategories = ["ar-condicionado", "geladeira", "microondas", "tv", "maquina-lavar", "monitor"];
 
 const Index = () => {
   const [step, setStep] = useState<Step>("hero");
