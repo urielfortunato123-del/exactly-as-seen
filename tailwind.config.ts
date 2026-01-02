@@ -52,7 +52,9 @@ export default {
         },
         success: "hsl(var(--success))",
         warning: "hsl(var(--warning))",
-        "teal-glow": "hsl(var(--teal-glow))",
+        "purple-glow": "hsl(var(--purple-glow))",
+        "pink-glow": "hsl(var(--pink-glow))",
+        "cyan-glow": "hsl(var(--cyan-glow))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
