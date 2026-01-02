@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import CategorySelection from "@/components/CategorySelection";
@@ -105,7 +106,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {step === "hero" && <Header />}
       {showProgress && (
         <ProgressSteps
@@ -123,7 +124,7 @@ const Index = () => {
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3 }}
-          className={showProgress ? "pt-24" : ""}
+          className={`flex-1 ${showProgress ? "pt-24" : ""}`}
         >
           {step === "hero" && (
             <>
@@ -131,6 +132,7 @@ const Index = () => {
               <div ref={comparisonRef}>
                 <HowItWorksSection onStart={handleStart} />
               </div>
+              <Footer />
             </>
           )}
 
@@ -170,14 +172,17 @@ const Index = () => {
           )}
 
           {step === "result" && category && (
-            <ResultDisplay
-              currentProduct={currentProduct}
-              newProduct={newProduct}
-              category={category}
-              answers={answers}
-              energyData={energyData}
-              onRestart={handleRestart}
-            />
+            <>
+              <ResultDisplay
+                currentProduct={currentProduct}
+                newProduct={newProduct}
+                category={category}
+                answers={answers}
+                energyData={energyData}
+                onRestart={handleRestart}
+              />
+              <Footer />
+            </>
           )}
         </motion.div>
       </AnimatePresence>
