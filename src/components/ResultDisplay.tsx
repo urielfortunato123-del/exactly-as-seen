@@ -12,10 +12,13 @@ import {
   RotateCcw,
   Leaf,
   Target,
-  ThumbsUp
+  ThumbsUp,
+  Tag,
+  ShoppingBag
 } from "lucide-react";
 import { EnergyData } from "./EnergyCalculator";
 import { getQuestionsForCategory } from "@/data/categoryQuestions";
+import { getPriceSuggestion, formatPrice } from "@/data/priceRanges";
 
 interface ResultProps {
   currentProduct: string;
@@ -28,7 +31,7 @@ interface ResultProps {
 
 const ResultDisplay = ({ currentProduct, newProduct, category, answers, energyData, onRestart }: ResultProps) => {
   const questions = getQuestionsForCategory(category);
-  
+  const priceSuggestion = getPriceSuggestion(category, answers);
   // Calculate score based on answers and category
   const calculateScore = () => {
     let score = 50;
@@ -278,6 +281,44 @@ const ResultDisplay = ({ currentProduct, newProduct, category, answers, energyDa
             </Card>
           </motion.div>
         )}
+
+        {/* Price Suggestion */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="mb-12"
+        >
+          <Card variant="gradient" className="p-6 border-primary/30">
+            <div className="flex items-start gap-4">
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center bg-primary/20 shrink-0">
+                <Tag className="w-7 h-7 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
+                  <ShoppingBag className="w-5 h-5 text-primary" />
+                  Faixa de Preço Sugerida
+                </h3>
+                <div className="flex flex-wrap items-baseline gap-2 mb-3">
+                  <span className="text-3xl font-bold text-primary">
+                    {formatPrice(priceSuggestion.range.min)} - {formatPrice(priceSuggestion.range.max)}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    (típico: {formatPrice(priceSuggestion.range.typical)})
+                  </span>
+                </div>
+                <p className="text-sm text-foreground/80 mb-3">
+                  {priceSuggestion.recommendation}
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-medium capitalize">
+                    Perfil {priceSuggestion.tier}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
 
         {/* Insights Grid */}
         <motion.div
