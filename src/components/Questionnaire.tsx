@@ -2,58 +2,32 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { ArrowRight, User, Briefcase, Clock, Wallet } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { getQuestionsForCategory, Question } from "@/data/categoryQuestions";
 
 interface QuestionnaireProps {
+  category: string;
   answers: Record<string, string>;
   onAnswer: (question: string, answer: string) => void;
   onComplete: () => void;
 }
 
-const questions = [
-  {
-    id: "usage",
-    icon: User,
-    question: "Qual é o seu perfil de uso?",
-    options: [
-      { value: "leve", label: "Leve", description: "Uso básico, ocasional" },
-      { value: "moderado", label: "Moderado", description: "Uso diário regular" },
-      { value: "intenso", label: "Intenso", description: "Uso profissional/intensivo" },
-    ],
-  },
-  {
-    id: "priority",
-    icon: Briefcase,
-    question: "O que é mais importante para você?",
-    options: [
-      { value: "desempenho", label: "Desempenho", description: "Velocidade e potência" },
-      { value: "durabilidade", label: "Durabilidade", description: "Vida útil longa" },
-      { value: "economia", label: "Economia", description: "Menor custo total" },
-    ],
-  },
-  {
-    id: "timeline",
-    icon: Clock,
-    question: "Qual a urgência da troca?",
-    options: [
-      { value: "urgente", label: "Urgente", description: "Preciso trocar agora" },
-      { value: "planejado", label: "Planejado", description: "Nos próximos meses" },
-      { value: "pesquisa", label: "Pesquisando", description: "Sem pressa, só analisando" },
-    ],
-  },
-  {
-    id: "budget",
-    icon: Wallet,
-    question: "Como está seu orçamento?",
-    options: [
-      { value: "limitado", label: "Limitado", description: "Preço é prioridade" },
-      { value: "flexivel", label: "Flexível", description: "Posso investir mais se valer" },
-      { value: "aberto", label: "Aberto", description: "Busco o melhor, sem limite" },
-    ],
-  },
-];
+const getCategoryIcon = (category: string) => {
+  const icons: Record<string, string> = {
+    celular: "📱",
+    "ar-condicionado": "❄️",
+    geladeira: "🧊",
+    tv: "📺",
+    fogao: "🔥",
+    microondas: "🍳",
+    computador: "💻",
+    moveis: "🛋️",
+  };
+  return icons[category] || "📦";
+};
 
-const Questionnaire = ({ answers, onAnswer, onComplete }: QuestionnaireProps) => {
+const Questionnaire = ({ category, answers, onAnswer, onComplete }: QuestionnaireProps) => {
+  const questions = getQuestionsForCategory(category);
   const isComplete = questions.every((q) => answers[q.id]);
 
   return (
@@ -65,16 +39,17 @@ const Questionnaire = ({ answers, onAnswer, onComplete }: QuestionnaireProps) =>
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
+          <span className="text-4xl mb-4 block">{getCategoryIcon(category)}</span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Entenda seu perfil
+            Sobre seu uso
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Responda algumas perguntas para personalizar a análise
+          <p className="text-foreground/70 text-lg">
+            Responda para personalizar a análise da sua categoria
           </p>
         </motion.div>
 
         <div className="space-y-8">
-          {questions.map((q, qIndex) => (
+          {questions.map((q: Question, qIndex: number) => (
             <motion.div
               key={q.id}
               initial={{ opacity: 0, y: 20 }}
@@ -82,8 +57,8 @@ const Questionnaire = ({ answers, onAnswer, onComplete }: QuestionnaireProps) =>
               transition={{ duration: 0.4, delay: 0.1 * qIndex }}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
-                  <q.icon className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                  {qIndex + 1}
                 </div>
                 <Label className="text-lg font-medium">{q.question}</Label>
               </div>
